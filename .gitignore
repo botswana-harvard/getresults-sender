@@ -5,6 +5,10 @@ __pycache__/
 # C extensions
 *.so
 
+.pydevproject
+.project
+.settings
+getresults_sender/dbsqlite3
 # Distribution / packaging
 .Python
 env/
