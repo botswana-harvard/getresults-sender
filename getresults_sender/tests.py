@@ -2,7 +2,7 @@ from django.test import TestCase
 from getresults_order.utils import load_utestids_from_csv
 
 from .models import Sender, SenderPanelItem, SenderPanel
-from .utils import load_sender_panels_from_csv, load_senders_from_csv
+from .sender_meta_data import SenderMetaData
 from getresults_order.utils.load_order_panels_from_csv import load_order_panels_from_csv
 
 
@@ -11,8 +11,9 @@ class TestGetresults(TestCase):
     def setUp(self):
         load_utestids_from_csv()
         load_order_panels_from_csv()
-        load_sender_panels_from_csv()
-        load_senders_from_csv()
+        sender_meta_data = SenderMetaData()
+        sender_meta_data.load_senders_from_csv()
+        sender_meta_data.load_sender_panels_from_csv()
 
     def test_find_sender_panel_items_from_serial_number(self):
         serial_number = 'E12334567890'
