@@ -18,7 +18,7 @@ class TestGetresults(TestCase):
         serial_number = 'E12334567890'
         sender = Sender.objects.get(serial_number=serial_number)
         sender_panel = SenderPanel.objects.get(senders=sender)
-        self.assertEqual(sender_panel.name, 'CD3/CD8/CD45/CD4 TruC')
+        self.assertEqual(sender_panel.name, 'CD3/CD8/CD45/CD4 TRUC')
         utestids = [i.utestid.name for i in SenderPanelItem.objects.filter(
             sender_panel=sender_panel)]
         utestids.sort()
