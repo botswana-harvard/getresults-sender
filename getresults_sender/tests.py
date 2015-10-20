@@ -12,8 +12,7 @@ class TestGetresults(TestCase):
         load_utestids_from_csv()
         load_order_panels_from_csv()
         sender_meta_data = SenderMetaData()
-        sender_meta_data.load_senders_from_csv()
-        sender_meta_data.load_sender_panels_from_csv()
+        sender_meta_data.load_all()
 
     def test_find_sender_panel_items_from_serial_number(self):
         serial_number = 'E12334567890'

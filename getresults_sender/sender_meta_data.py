@@ -18,11 +18,13 @@ class SenderMetaData(object):
         self.sender_panel_file = (sender_panel_file or
                                   os.path.join(settings.BASE_DIR, 'testdata/sender_panels.csv'))
         self.sender_file = sender_file or os.path.join(settings.BASE_DIR, 'testdata/senders.csv')
+        self.load_all()
+
+    def load_all(self):
         self.load_senders_from_csv()
         self.load_sender_panels_from_csv()
 
     def load_sender_panels_from_csv(self):
-        """sender_model,utestid,sender_field_name,sender_panel"""
         with open(self.sender_panel_file, 'r') as f:
             reader = csv.reader(f, quotechar="'")
             header = next(reader)
@@ -68,6 +70,8 @@ class SenderMetaData(object):
         try:
             sender = Sender.objects.get(serial_number=sender_serial_number)
         except Sender.DoesNotExist:
+            if not sender_model_name:
+                print(sender_serial_number)
             sender = Sender.objects.create(
                 name=sender_serial_number,
                 serial_number=sender_serial_number,
