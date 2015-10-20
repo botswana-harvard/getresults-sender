@@ -37,7 +37,7 @@ class SenderPanelItemInline(admin.TabularInline):
 
 
 class SenderPanelAdmin(admin.ModelAdmin):
-    list_display = ('name', 'sender_model')
-    search_fields = ('name', 'sender_model__name')
+    list_display = ('name', )
+    search_fields = ('name', )
     inlines = [SenderPanelItemInline]
 admin_site.register(SenderPanel, SenderPanelAdmin)
