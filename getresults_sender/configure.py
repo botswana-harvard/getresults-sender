@@ -7,7 +7,7 @@ from getresults_order.models import Utestid, OrderPanel
 from .models import SenderPanel, SenderPanelItem, SenderModel, Sender
 
 
-class SenderMetaData(object):
+class Configure(object):
     """A class to import from CSV meta data into SenderPanel, SenderPanelItem,
     SenderModel, Sender, Utestid, OrderPanel.
 
@@ -25,6 +25,14 @@ class SenderMetaData(object):
         self.load_sender_panels_from_csv()
 
     def load_sender_panels_from_csv(self):
+        """Loads the sender panel file.
+
+        Expects a header that includes these fields:
+            sender_serial_number,order_panel,utestid,sender_utestid,sender_panel
+
+        sender_serial_number must refer to a serial number in Sender.
+
+        """
         with open(self.sender_panel_file, 'r') as f:
             reader = csv.reader(f, quotechar="'")
             header = next(reader)
@@ -70,8 +78,6 @@ class SenderMetaData(object):
         try:
             sender = Sender.objects.get(serial_number=sender_serial_number)
         except Sender.DoesNotExist:
-            if not sender_model_name:
-                print(sender_serial_number)
             sender = Sender.objects.create(
                 name=sender_serial_number,
                 serial_number=sender_serial_number,
@@ -93,5 +99,12 @@ class SenderMetaData(object):
             sender_panel = SenderPanel.objects.create(
                 name=sender_panel_name,
                 order_panel=self.order_panel(order_panel_name))
-        sender_panel.senders.add(self.sender(sender_serial_number))
+        try:
+            sender = Sender.objects.get(serial_number=sender_serial_number)
+        except Sender.DoesNotExist:
+            print(
+                'Warning. Creating missing sender for sender panel \'{}\'. Got \'{}\'.'.format(
+                    sender_panel, sender_serial_number))
+            sender = self.sender(sender_serial_number)
+        sender_panel.senders.add(sender)
         return sender_panel

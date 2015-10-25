@@ -1,18 +1,17 @@
 from django.test import TestCase
-from getresults_order.utils import load_utestids_from_csv
 
-from .models import Sender, SenderPanelItem, SenderPanel
-from .sender_meta_data import SenderMetaData
-from getresults_order.utils.load_order_panels_from_csv import load_order_panels_from_csv
+from getresults_order.configure import Configure as ConfigureOrder
+from getresults_sender.configure import Configure as ConfigureSender
+from getresults_sender.models import Sender, SenderPanelItem, SenderPanel
 
 
 class TestGetresults(TestCase):
 
     def setUp(self):
-        load_utestids_from_csv()
-        load_order_panels_from_csv()
-        sender_meta_data = SenderMetaData()
-        sender_meta_data.load_all()
+        configure_order = ConfigureOrder()
+        configure_order.load_all()
+        configure_sender = ConfigureSender()
+        configure_sender.load_all()
 
     def test_find_sender_panel_items_from_serial_number(self):
         serial_number = 'E12334567890'
